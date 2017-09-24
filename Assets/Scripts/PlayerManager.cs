@@ -12,35 +12,56 @@ public class PlayerManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		anim = GetComponent<Animator> ();
-
-		facingRight = false;
-
+		facingRight = true;
 		speed = 0f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		MovePlayer (speed);
-		Idle ();
+
+		if (this.anim.GetCurrentAnimatorStateInfo (0).IsName("player-cast") && anim.GetCurrentAnimatorStateInfo (0).normalizedTime > 0.75) {
+			anim.SetInteger ("State", 0);
+		} else if (this.anim.GetCurrentAnimatorStateInfo (0).IsName("player-reel") && anim.GetCurrentAnimatorStateInfo (0).normalizedTime > 0.75) {
+			anim.SetInteger ("State", 0);
+		}
 	}
 
+	// Sprite Transformer ==================================
 	void MovePlayer(float playerSpeed) {
-		if (facingRight) {
+		if (facingRight && transform.position.x < 7.2) {
 			transform.position += Vector3.right * speed * Time.deltaTime;
-		} else {
+			transform.localRotation = Quaternion.Euler(0, 180, 0);
+		} else if (!facingRight && transform.position.x > -7.2) {
 			transform.position += Vector3.left * speed * Time.deltaTime;
+			transform.localRotation = Quaternion.Euler(0, 0, 0);
 		}
 	}
 
 	public void SailLeft() {
-		speed = 1;
+		facingRight = false;
+		speed = 1.8f;
 	}
 
 	public void SailRight() {
-		speed = -1;
+		facingRight = true;
+		speed = 1.8f;
 	}
 
-	private void Idle() {
+	public void Idle() {
 		speed = 0f;
+	}
+
+	public bool GetFacingRight() {
+		return facingRight;
+	}
+
+	// Animation Handler ==================================
+	public void Reel() {
+		anim.SetInteger ("State", 1);
+	}
+
+	public void Cast() {
+		anim.SetInteger ("State", 2);
 	}
 }

@@ -6,6 +6,7 @@ public class MusicManager : MonoBehaviour {
 
 	public AudioSource bgMusic;
 	public AudioSource fxMusic;
+	public AudioSource swooshMusic;
 	private bool fadingOut = false;
 
 	void Update() {
@@ -15,15 +16,19 @@ public class MusicManager : MonoBehaviour {
 		}
 	}
 		
-	public void toggleBgMusic() {
+	public void ToggleBgMusic() {
 		bgMusic.mute = !bgMusic.mute;
 	}
 
-	public void playFxMusic() {
+	public void PlayFxMusic() {
 		fxMusic.PlayOneShot(fxMusic.clip, 1);
 	}
 
-	public void toggleFxMusic() {
+	public void PlaySwooshMusic() {
+		swooshMusic.PlayOneShot(swooshMusic.clip, 1);
+	}
+
+	public void ToggleFxMusic() {
 		fxMusic.mute = !fxMusic.mute;
 	}
 

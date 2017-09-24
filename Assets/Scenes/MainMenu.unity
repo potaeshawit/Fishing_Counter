@@ -1098,7 +1098,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1515567892}
-        m_MethodName: toggleFxMusic
+        m_MethodName: ToggleFxMusic
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1496,7 +1496,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1515567892}
-        m_MethodName: playFxMusic
+        m_MethodName: PlayFxMusic
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2863,7 +2863,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1515567892}
-        m_MethodName: playFxMusic
+        m_MethodName: PlayFxMusic
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2874,7 +2874,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1515567892}
-        m_MethodName: toggleBgMusic
+        m_MethodName: ToggleBgMusic
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4086,7 +4086,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1515567892}
-        m_MethodName: playFxMusic
+        m_MethodName: PlayFxMusic
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4574,6 +4574,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bgMusic: {fileID: 1515567891}
   fxMusic: {fileID: 1515567893}
+  swooshMusic: {fileID: 0}
 --- !u!82 &1515567893
 AudioSource:
   m_ObjectHideFlags: 0
