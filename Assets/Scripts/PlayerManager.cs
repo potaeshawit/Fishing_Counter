@@ -64,4 +64,5 @@ public class PlayerManager : MonoBehaviour {
 	public void Cast() {
 		anim.SetInteger ("State", 2);
 	}
+
 }

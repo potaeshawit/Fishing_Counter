@@ -6,6 +6,7 @@ public class PreyManager : MonoBehaviour {
 
 	public GameObject player;
 	public GameObject fish;
+	public GameObject mainCamera;
 	private float ySpeed;
 	private float timeDelay;
 	private bool isReeling;
@@ -98,7 +99,11 @@ public class PreyManager : MonoBehaviour {
 		isReeling = true;
 	}
 
-	public void ReelUp() { isReelingUp = true; }
+	public void ReelUp() { 
+		isReelingUp = true; 
+		player.GetComponent<PlayerManager> ().Reel ();
+		mainCamera.GetComponent<MusicManager> ().PlayReelMusic ();
+	}
 	public void StopReel() { ySpeed = 0f; }
 
 	private float GetXDistFromPlayer(float x) {

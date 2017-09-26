@@ -8,6 +8,7 @@ public class MusicManager : MonoBehaviour {
 	public AudioSource fxMusic;
 	public AudioSource swooshMusic;
 	public AudioSource boatFx;
+	public AudioSource reelFx;
 	private bool fadingOut = false;
 
 	void Start() {
@@ -16,10 +17,10 @@ public class MusicManager : MonoBehaviour {
 		bgMusic.mute = !bg;
 		boatFx.mute = !bg;
 
-
 		bool fx = SoundSettings.fxMusic; 
 		fxMusic.mute = !fx;
 		swooshMusic.mute = !fx;
+		reelFx.mute = !fx;
 	}
 
 	void Update() {
@@ -42,6 +43,10 @@ public class MusicManager : MonoBehaviour {
 
 	public void PlaySwooshMusic() {
 		swooshMusic.PlayOneShot(swooshMusic.clip, 1);
+	}
+
+	public void PlayReelMusic() {
+		reelFx.PlayOneShot(reelFx.clip, 1);
 	}
 
 	public void ToggleFxMusic() {

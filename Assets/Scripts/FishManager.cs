@@ -15,6 +15,7 @@ public class FishManager : MonoBehaviour {
 	public GameObject soundSystem;
 	public GameObject buttons;
 	public GameObject textScore;
+	public GameObject canvas;
 	private Text score;
 
 	private int fishCount;
@@ -133,6 +134,7 @@ public class FishManager : MonoBehaviour {
 		transform.localScale = new Vector3 (currFish.GetScale(), currFish.GetScale(), 0);
 
 		prey.GetComponent<PreyManager> ().ReelUp ();
+
 	}
 
 	public void Reeled() {
@@ -145,10 +147,12 @@ public class FishManager : MonoBehaviour {
 	}
 
 	private void InitNextFish() {
-		if (fish.Count > 0) {
+		if (fish.Count > 1) {
 			fish.RemoveAt (0);
 			currFish = fish [0];
-			anim.SetInteger ("FishCount", currFish.GetID());
+			anim.SetInteger ("FishCount", currFish.GetID ());
+		} else {
+			canvas.GetComponent<LayerManager> ().ShowWinLayer (true);
 		}
 	}
 
