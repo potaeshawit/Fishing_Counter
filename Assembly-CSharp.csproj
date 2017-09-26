@@ -51,15 +51,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\FishingNetManager.cs" />
-     <Compile Include="Assets\ReelButtonManager.cs" />
+     <Compile Include="Assets\LayerManager.cs" />
      <Compile Include="Assets\Scripts\Fader.cs" />
      <Compile Include="Assets\Scripts\Fish.cs" />
+     <Compile Include="Assets\Scripts\FishingNetManager.cs" />
      <Compile Include="Assets\Scripts\FishManager.cs" />
      <Compile Include="Assets\Scripts\MusicManager.cs" />
      <Compile Include="Assets\Scripts\PlayerManager.cs" />
      <Compile Include="Assets\Scripts\PreyManager.cs" />
+     <Compile Include="Assets\Scripts\ReelButtonManager.cs" />
      <Compile Include="Assets\Scripts\SceneChanger.cs" />
+     <Compile Include="Assets\Scripts\SoundSystem.cs" />
+     <Compile Include="Assets\Scripts\WhaleCollide.cs" />
+     <Compile Include="Assets\SoundSettings.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

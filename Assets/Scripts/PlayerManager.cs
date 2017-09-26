@@ -40,12 +40,12 @@ public class PlayerManager : MonoBehaviour {
 
 	public void SailLeft() {
 		facingRight = false;
-		speed = 1.8f;
+		speed = 2.5f;
 	}
 
 	public void SailRight() {
 		facingRight = true;
-		speed = 1.8f;
+		speed = 2.5f;
 	}
 
 	public void Idle() {

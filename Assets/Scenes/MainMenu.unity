@@ -1075,7 +1075,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 2
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -1099,6 +1099,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1515567892}
         m_MethodName: ToggleFxMusic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1075023128}
+        m_MethodName: toggleFxMusic
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1473,7 +1484,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 2
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -2787,6 +2798,54 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1043054766}
+--- !u!1001 &1075023127
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4743413538950910, guid: 1de60ee7c061e4e459c7ff4ddafc892a, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -8.644287
+      objectReference: {fileID: 0}
+    - target: {fileID: 4743413538950910, guid: 1de60ee7c061e4e459c7ff4ddafc892a, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -0.24729109
+      objectReference: {fileID: 0}
+    - target: {fileID: 4743413538950910, guid: 1de60ee7c061e4e459c7ff4ddafc892a, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4743413538950910, guid: 1de60ee7c061e4e459c7ff4ddafc892a, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4743413538950910, guid: 1de60ee7c061e4e459c7ff4ddafc892a, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4743413538950910, guid: 1de60ee7c061e4e459c7ff4ddafc892a, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4743413538950910, guid: 1de60ee7c061e4e459c7ff4ddafc892a, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4743413538950910, guid: 1de60ee7c061e4e459c7ff4ddafc892a, type: 2}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 1de60ee7c061e4e459c7ff4ddafc892a, type: 2}
+  m_IsPrefabParent: 0
+--- !u!114 &1075023128 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114093490731143404, guid: 1de60ee7c061e4e459c7ff4ddafc892a,
+    type: 2}
+  m_PrefabInternal: {fileID: 1075023127}
+  m_Script: {fileID: 11500000, guid: f9377a7daa45041a6ae8ef68538d2349, type: 3}
 --- !u!1 &1082140861
 GameObject:
   m_ObjectHideFlags: 0
@@ -2840,7 +2899,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 2
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -2875,6 +2934,17 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1515567892}
         m_MethodName: ToggleBgMusic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1075023128}
+        m_MethodName: toggleBgMusic
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4063,7 +4133,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 2
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -4575,6 +4645,7 @@ MonoBehaviour:
   bgMusic: {fileID: 1515567891}
   fxMusic: {fileID: 1515567893}
   swooshMusic: {fileID: 0}
+  boatFx: {fileID: 0}
 --- !u!82 &1515567893
 AudioSource:
   m_ObjectHideFlags: 0

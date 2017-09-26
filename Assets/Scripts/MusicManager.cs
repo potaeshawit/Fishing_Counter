@@ -7,12 +7,28 @@ public class MusicManager : MonoBehaviour {
 	public AudioSource bgMusic;
 	public AudioSource fxMusic;
 	public AudioSource swooshMusic;
+	public AudioSource boatFx;
 	private bool fadingOut = false;
+
+	void Start() {
+		// bgMusic
+		bool bg = SoundSettings.bgMusic;
+		bgMusic.mute = !bg;
+		boatFx.mute = !bg;
+
+
+		bool fx = SoundSettings.fxMusic; 
+		fxMusic.mute = !fx;
+		swooshMusic.mute = !fx;
+	}
 
 	void Update() {
 		if (fadingOut && bgMusic.volume > 0) {
 			Debug.Log ("music");
 			bgMusic.volume -= (float) (1.1 * Time.deltaTime);
+			if (boatFx != null) {
+				boatFx.volume -= (float) (1.1 * Time.deltaTime);
+			}
 		}
 	}
 		

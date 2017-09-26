@@ -1,15 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FishManager : MonoBehaviour {
 
 	Animator anim;
-
 	List<Fish> fish;
 	Fish currFish;
-
 	Vector2 speed;
+	bool gotHooked;
+
+	public GameObject prey;
+	public GameObject soundSystem;
+	public GameObject buttons;
+	public GameObject textScore;
+	private Text score;
+
+	private int fishCount;
 
 	// Use this for initialization
 	void Start () {
@@ -17,14 +25,22 @@ public class FishManager : MonoBehaviour {
 		fish = InitializeFish();
 		currFish = fish [0];
 		speed = new Vector2 ();
+		gotHooked = false;
+		fishCount = 0;
+		score = textScore.GetComponent<Text> ();
+		score.text = "" + fishCount;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		if (gotHooked) {
+			BeingReeled ();
+			return;
+		}
+
 		// 1. If first time, move to initPoint
 		if (currFish.GetFirstInit()) {
-			transform.position = currFish.GetInitPoint ();
-			currFish.SetFirstInit (false);
+			RenderFish ();
 			return;
 		}
 
@@ -33,7 +49,7 @@ public class FishManager : MonoBehaviour {
 
 		// 3. reached target
 		if (ReachedTarget()) {
-			RegenNextFish ();
+			Survive ();
 		}
 	}
 
@@ -76,20 +92,15 @@ public class FishManager : MonoBehaviour {
 		return (speed.x < 0.5 && speed.y < 0.5);
 	}
 
-	private void RegenNextFish() {
-		if (currFish.GetCheckPoints ().Count == 1) {
-			if (fish.Count > 0) {
-				fish.RemoveAt (0);
-				currFish = fish [0];
-				anim.SetInteger ("FishCount", currFish.GetID());
-			}
-		} else {
+	private void Survive() {
+		if (currFish.GetCheckPoints ().Count == 1)
+			InitNextFish ();
+		else
 			currFish.DequeueCheckPoints ();
-		}
 	}
 
 	private float GetSpeedMultiplier() {
-		return (currFish.GetCheckPoints ().Count == currFish.GetCheckPointSize ()) ? 0.2f : 0.7f;
+		return (currFish.GetCheckPoints ().Count == currFish.GetCheckPointSize ()) ? 0.42f : 0.7f;
 	}
 
 	private Vector3 GetPositionAtLayer(float z) {
@@ -97,12 +108,55 @@ public class FishManager : MonoBehaviour {
 	}
 		
 	private List<Fish> InitializeFish() {
+		float[] scale = new float[] {
+			4.0f, 3.7f, 4.0f, 4.0f, 2.0f, 3.0f, 3.0f, 3.0f, 4.0f, 4.0f, 
+			4.0f, 3.0f, 6.0f, 5.0f, 4.5f, 7.0f, 4.0f, 10.0f, 2.0f, 12.0f 	
+		};
+
 		List<Fish> f = new List<Fish> ();
-		for (int i = 1;  i <= 4;  i++) f.Add (new Fish (i, 8, 6));
-		for (int i = 5;  i <= 8;  i++) f.Add (new Fish (i, 8, 6));
-		for (int i = 9;  i <= 12; i++) f.Add (new Fish (i, 7, 6));
-		for (int i = 13; i <= 16; i++) f.Add (new Fish (i, 6, 6));
-		for (int i = 17; i <= 20; i++) f.Add (new Fish (i, 6, 6));
+		for (int i = 0;  i < 20;  i++) 
+			f.Add (new Fish (i + 1, 6, scale[i]));
 		return f;
+	}
+
+	public void SetGotHooked(bool boolean) {
+		this.gotHooked = boolean;
+	}
+
+	public void BeingReeled() {
+		// position
+		transform.position = prey.transform.position;
+
+		// scale
+		float interative = (float) ((currFish.GetScale() - 0.7) * 0.2);
+		currFish.SetScale (currFish.GetScale () - interative);
+		transform.localScale = new Vector3 (currFish.GetScale(), currFish.GetScale(), 0);
+
+		prey.GetComponent<PreyManager> ().ReelUp ();
+	}
+
+	public void Reeled() {
+		InitNextFish ();
+		RenderFish ();
+		buttons.GetComponent<ReelButtonManager>().ReelUpClicked();
+		soundSystem.GetComponent<SoundSystem> ().PlayCountSpeech (currFish.GetID());
+		score.text = "" + fishCount;
+		fishCount++;
+	}
+
+	private void InitNextFish() {
+		if (fish.Count > 0) {
+			fish.RemoveAt (0);
+			currFish = fish [0];
+			anim.SetInteger ("FishCount", currFish.GetID());
+		}
+	}
+
+	private void RenderFish() {
+		gotHooked = false;
+		transform.position = currFish.GetInitPoint ();
+		float scale = currFish.GetScale ();
+		transform.localScale = new Vector3 (scale, scale, 0);
+		currFish.SetFirstInit (false);
 	}
 }

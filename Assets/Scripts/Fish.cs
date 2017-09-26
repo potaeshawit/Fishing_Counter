@@ -8,18 +8,17 @@ public class Fish {
 	static int[] RANGE_Y = {50, -400};
 
 	private int ID;
-	private int timeLimit;
 	private Vector2 initPoint;
 	private int checkPointSize;
 	private List<Vector2> checkPoints;
-	private float speed;
 	private bool facingRight;
 	private bool firstInit;
+	private float scale;
 
-	public Fish(int ID, int timeLimit, int checkPointSize, float speed = 0f) {
+	public Fish(int ID, int checkPointSize, float scale) {
 		this.ID = ID;
-		this.timeLimit = timeLimit;
 		this.checkPointSize = checkPointSize;
+		this.scale = scale;
 
 		int randForX = Random.Range (0, 2);
 		float randX = (randForX == 0) ? -10.5f : 10.5f;
@@ -47,8 +46,11 @@ public class Fish {
 		return this.ID;
 	}
 
-	public int GetTimeLimit() {
-		return this.timeLimit;
+	public float GetScale() {
+		return this.scale;
+	}
+	public void SetScale(float scale) {
+		this.scale = scale;
 	}
 		
 	public Vector2 GetInitPoint() {
@@ -61,10 +63,6 @@ public class Fish {
 	}
 
 	public int GetCheckPointSize() { return this.checkPointSize; }
-
-	public float GetSpeed() {
-		return this.speed;
-	}
 
 	public bool GetFacingRight() {
 		return this.facingRight;

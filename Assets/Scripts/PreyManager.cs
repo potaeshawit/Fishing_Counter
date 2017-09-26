@@ -5,6 +5,7 @@ using UnityEngine;
 public class PreyManager : MonoBehaviour {
 
 	public GameObject player;
+	public GameObject fish;
 	private float ySpeed;
 	private float timeDelay;
 	private bool isReeling;
@@ -13,6 +14,7 @@ public class PreyManager : MonoBehaviour {
 	private Vector2 pointStart;
 	private Vector2 pointEnd;
 	private Vector3 target;
+	private bool fishAttached;
 
 	// Use this for initialization
 	void Start () {
@@ -23,6 +25,7 @@ public class PreyManager : MonoBehaviour {
 		isFirstTriggered = true;
 		isReelingUp = false;
 		target = new Vector3 ();
+		fishAttached = false;
 	}
 	
 	// Update is called once per frame
@@ -40,6 +43,9 @@ public class PreyManager : MonoBehaviour {
 
 		// start moving
 		MovePrey ();
+
+		if (!fishAttached)
+			CheckCollideFish ();
 	}
 
 	private void MovePrey() {
@@ -57,7 +63,7 @@ public class PreyManager : MonoBehaviour {
 		}
 
 		float xDistance = target.x - transform.position.x;
-		float xSpeed = Mathf.Abs (xDistance) * 0.7f;
+		float xSpeed = Mathf.Abs (xDistance) * 0.5f;
 		if (xDistance > 0.2)
 			transform.position += Vector3.right * xSpeed * Time.deltaTime;
 		else if (xDistance < -0.8)
@@ -71,10 +77,12 @@ public class PreyManager : MonoBehaviour {
 		// travel-y
 		if (isReelingUp) {
 			float yDistance = player.transform.position.y - transform.position.y;
-			float ySpeed = Mathf.Abs (yDistance) * 2.5f;
+			float ySpeed = Mathf.Abs (yDistance) * 5f;
 			transform.position += Vector3.up * ySpeed * Time.deltaTime;
 			if (transform.position.y > 2.8) {
+				// finishing up fish[i]
 				Start ();
+				fish.GetComponent<FishManager> ().Reeled ();
 			}
 		} else if (transform.position.y > -4.5) {
 			transform.position += Vector3.down * ySpeed * Time.deltaTime;
@@ -90,13 +98,8 @@ public class PreyManager : MonoBehaviour {
 		isReeling = true;
 	}
 
-	public void ReelUp() {
-		isReelingUp = true;
-	}
-
-	public void StopReel() {
-		ySpeed = 0f;
-	}
+	public void ReelUp() { isReelingUp = true; }
+	public void StopReel() { ySpeed = 0f; }
 
 	private float GetXDistFromPlayer(float x) {
 		PlayerManager playerManager = player.GetComponent<PlayerManager> ();
@@ -106,9 +109,7 @@ public class PreyManager : MonoBehaviour {
 
 	private bool IsDelayed() {
 		timeDelay -= Time.deltaTime;
-		if (timeDelay > 0)
-			return true;
-		return false;
+		return (timeDelay > 0);
 	}
 
 	public Vector2[] GetPoints() {
@@ -116,8 +117,15 @@ public class PreyManager : MonoBehaviour {
 		return points;
 	}
 
-	void OnTriggerEnter2D(Collider2D col) {
-		Debug.Log ("GOT IT");
+	private void CheckCollideFish() {
+		float r = 0.6f;
+		float x = transform.position.x;
+		float y = transform.position.y;
+		float fX = fish.transform.position.x;
+		float fY = fish.transform.position.y;
+		if ((x > fX - r && x < fX + r) && (y > fY - r && y < fY + r)) {
+			fish.GetComponent<FishManager> ().SetGotHooked(true);
+		}
 	}
 
 	private Vector3 GetPositionAtLayer(float z) {
