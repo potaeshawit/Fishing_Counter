@@ -35,6 +35,6 @@ public class SoundSystem : MonoBehaviour {
 	}
 
 	public void PlayCountSpeech(int number) {
-		source.PlayOneShot(clips[number - 1], 4);
+		source.PlayOneShot(clips[number], 4);
 	}
 }

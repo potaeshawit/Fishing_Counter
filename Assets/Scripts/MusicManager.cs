@@ -25,7 +25,6 @@ public class MusicManager : MonoBehaviour {
 
 	void Update() {
 		if (fadingOut && bgMusic.volume > 0) {
-			Debug.Log ("music");
 			bgMusic.volume -= (float) (1.1 * Time.deltaTime);
 			if (boatFx != null) {
 				boatFx.volume -= (float) (1.1 * Time.deltaTime);

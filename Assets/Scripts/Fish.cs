@@ -21,7 +21,7 @@ public class Fish {
 		this.scale = scale;
 
 		int randForX = Random.Range (0, 2);
-		float randX = (randForX == 0) ? -10.5f : 10.5f;
+		float randX = (randForX == 0) ? -13.5f : 13.5f;
 		float randY = Random.Range (RANGE_Y[0], RANGE_Y[1]) / 100.0f;
 		initPoint = new Vector2 (randX, randY);
 

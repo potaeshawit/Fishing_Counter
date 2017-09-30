@@ -16,12 +16,14 @@ public class PreyManager : MonoBehaviour {
 	private Vector2 pointEnd;
 	private Vector3 target;
 	private bool fishAttached;
+	private LineRenderer lr;
 
 	// Use this for initialization
 	void Start () {
 		ySpeed = 0f;
 		timeDelay = 1.0f;
 		GetComponent<Renderer> ().enabled = false;
+		GetComponent<LineRenderer> ().enabled = false;
 		isReeling = false;
 		isFirstTriggered = true;
 		isReelingUp = false;
@@ -32,21 +34,58 @@ public class PreyManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		// wait for animation "player-cast"
-		if (IsDelayed() || !isReeling)
+		if (IsDelayed () || !isReeling) {
 			return;
+		}
+			
 
 		// set active
 		GetComponent<Renderer> ().enabled = true;
+		GetComponent<LineRenderer> ().enabled = true;
+//		GetComponent<LineRenderer> ().material = new Material (Shader.Find("Particles/Additive"));
+		GetComponent<LineRenderer> ().SetColors (Color.black, Color.black);
+
 
 		target = transform.position;
 		target.x = player.transform.position.x;
 		target.x = GetXDistFromPlayer (target.x);
+
+
+		//Gizmos.DrawLine(transform.position, player.transform.position);
+//		Debug.DrawLine(transform.position, player.transform.position, Color.black, 0);
+		//net.transform.position = transform.position;
+//		lr = net.GetComponent<LineRenderer>();
+//		lr.SetColors(Color.black, Color.black);
+//		lr.SetWidth(0.04f, 0.04f);
+//		lr.SetPosition(0, transform.position);
+//		lr.SetPosition(1, player.transform.position);
+
+
+
+//		lr.enabled = GetComponent<Renderer> ().enabled;
+		//lr.enabled = true;
+		//GameObject.Destroy(myLine, duration);
+//		net.GetComponent<LineRenderer>().
 
 		// start moving
 		MovePrey ();
 
 		if (!fishAttached)
 			CheckCollideFish ();
+
+
+		DrawLine ();
+
+	}
+
+	private void DrawLine() {
+		Vector3 target = player.transform.position;
+
+		target.x += (float)(player.GetComponent<PlayerManager>().GetFacingRight() ? 1.5f : -1.5f);
+		target.y -= 0.2f;
+		GetComponent<LineRenderer> ().SetWidth(0.01f, 0.01f);
+		GetComponent<LineRenderer> ().SetPosition(0, transform.position);
+		GetComponent<LineRenderer> ().SetPosition(1, target);
 	}
 
 	private void MovePrey() {
@@ -82,11 +121,13 @@ public class PreyManager : MonoBehaviour {
 			transform.position += Vector3.up * ySpeed * Time.deltaTime;
 			if (transform.position.y > 2.8) {
 				// finishing up fish[i]
+				if (fishAttached) {
+					fish.GetComponent<FishManager> ().Reeled ();
+				}
 				Start ();
-				fish.GetComponent<FishManager> ().Reeled ();
 			}
 		} else if (transform.position.y > -4.5) {
-			transform.position += Vector3.down * ySpeed * Time.deltaTime;
+			transform.position += Vector3.down * ySpeed * 2f * Time.deltaTime;
 		}
 
 		pointStart.y = player.transform.position.y + 1;
@@ -109,7 +150,7 @@ public class PreyManager : MonoBehaviour {
 	private float GetXDistFromPlayer(float x) {
 		PlayerManager playerManager = player.GetComponent<PlayerManager> ();
 		bool facingRight = playerManager.GetFacingRight ();
-		return (float) (facingRight ? (x + 1.5f) : (x - 1.8f));
+		return (float) (facingRight ? (x + 1.5f) : (x - 1.5f));
 	}
 
 	private bool IsDelayed() {
@@ -123,13 +164,14 @@ public class PreyManager : MonoBehaviour {
 	}
 
 	private void CheckCollideFish() {
-		float r = 0.6f;
+		float r = 1.0f;
 		float x = transform.position.x;
 		float y = transform.position.y;
 		float fX = fish.transform.position.x;
 		float fY = fish.transform.position.y;
 		if ((x > fX - r && x < fX + r) && (y > fY - r && y < fY + r)) {
 			fish.GetComponent<FishManager> ().SetGotHooked(true);
+			fishAttached = true;
 		}
 	}
 

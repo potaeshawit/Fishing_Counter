@@ -6,6 +6,7 @@ public class PlayerManager : MonoBehaviour {
 
 	private bool facingRight;
 	private float speed;
+	private bool isAnimating;
 
 	Animator anim;
 
@@ -14,6 +15,7 @@ public class PlayerManager : MonoBehaviour {
 		anim = GetComponent<Animator> ();
 		facingRight = true;
 		speed = 0f;
+		isAnimating = false;
 	}
 	
 	// Update is called once per frame
@@ -32,9 +34,11 @@ public class PlayerManager : MonoBehaviour {
 		if (facingRight && transform.position.x < 7.2) {
 			transform.position += Vector3.right * speed * Time.deltaTime;
 			transform.localRotation = Quaternion.Euler(0, 180, 0);
+			isAnimating = false;
 		} else if (!facingRight && transform.position.x > -7.2) {
 			transform.position += Vector3.left * speed * Time.deltaTime;
 			transform.localRotation = Quaternion.Euler(0, 0, 0);
+			isAnimating = false;
 		}
 	}
 
@@ -58,11 +62,20 @@ public class PlayerManager : MonoBehaviour {
 
 	// Animation Handler ==================================
 	public void Reel() {
-		anim.SetInteger ("State", 1);
+		setAnimation (1);
 	}
 
 	public void Cast() {
-		anim.SetInteger ("State", 2);
+		setAnimation (2);
+	}
+
+	private void setAnimation(int state) {
+		anim.SetInteger ("State", state);
+		isAnimating = true;
+	}
+
+	public bool getIsAnimating() {
+		return isAnimating;
 	}
 
 }

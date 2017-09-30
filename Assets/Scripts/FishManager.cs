@@ -16,6 +16,7 @@ public class FishManager : MonoBehaviour {
 	public GameObject buttons;
 	public GameObject textScore;
 	public GameObject canvas;
+	public GameObject bar;
 	private Text score;
 
 	private int fishCount;
@@ -111,7 +112,7 @@ public class FishManager : MonoBehaviour {
 	private List<Fish> InitializeFish() {
 		float[] scale = new float[] {
 			4.0f, 3.7f, 4.0f, 4.0f, 2.0f, 3.0f, 3.0f, 3.0f, 4.0f, 4.0f, 
-			4.0f, 3.0f, 6.0f, 5.0f, 4.5f, 7.0f, 4.0f, 10.0f, 2.0f, 12.0f 	
+			4.0f, 3.0f, 4.5f, 5.0f, 4.5f, 4.5f, 4.0f, 4.5f, 2.0f, 4.5f 	
 		};
 
 		List<Fish> f = new List<Fish> ();
@@ -141,9 +142,10 @@ public class FishManager : MonoBehaviour {
 		InitNextFish ();
 		RenderFish ();
 		buttons.GetComponent<ReelButtonManager>().ReelUpClicked();
-		soundSystem.GetComponent<SoundSystem> ().PlayCountSpeech (currFish.GetID());
-		score.text = "" + fishCount;
+		soundSystem.GetComponent<SoundSystem> ().PlayCountSpeech (fishCount);
 		fishCount++;
+		score.text = "" + fishCount;
+		bar.GetComponent<BarManager> ().SetBar (fishCount);
 	}
 
 	private void InitNextFish() {
@@ -152,7 +154,7 @@ public class FishManager : MonoBehaviour {
 			currFish = fish [0];
 			anim.SetInteger ("FishCount", currFish.GetID ());
 		} else {
-			canvas.GetComponent<LayerManager> ().ShowWinLayer (true);
+			canvas.GetComponent<LayerManager> ().ShowWinLayer (true, score.text);
 		}
 	}
 
