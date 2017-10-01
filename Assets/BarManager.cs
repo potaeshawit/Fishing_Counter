@@ -40,7 +40,10 @@ public class BarManager : MonoBehaviour {
 		GetComponent<Image> ().sprite = bars [0];
 	}
 	
-	public void SetBar(int index) { 
+	public void SetBar(int index) {
+		if (index > 19) {
+			return;
+		}
 		GetComponent<Image> ().sprite = bars [index];
 	}
 }

@@ -5,37 +5,31 @@ using UnityEngine.UI;
 
 public class FishManager : MonoBehaviour {
 
-	public GameObject soundSystem;
-	public GameObject buttons;
-	public GameObject textScore;
-	public GameObject canvas;
-	public GameObject bar;
 	public GameObject gameControllerObj;
+	private GameController gameController;
 
-	Animator anim;
-	List<Fish> fish;
-	Fish currFish;
-	Vector2 speed;
-	bool gotHooked;
-	private Text score;
+	private Animator anim;
+	private Vector2 speed;
+	private Fish currFish;
+	private List<Fish> fish;
 	private int fishIndex;
 	private int fishCount;
-	private GameController gameController;
+	private bool gotHooked;
 
 	// Use this for initialization
 	void Start () {
 		gameController = gameControllerObj.GetComponent<GameController> ();
 		anim = GetComponent<Animator> ();
+
 		fish = InitializeFish();
 		speed = new Vector2 ();
 		gotHooked = false;
 		fishCount = 0;
 		fishIndex = 0;
 		currFish = fish [fishIndex];
-		score = textScore.GetComponent<Text> ();
-		score.text = "" + fishCount;
+
+		gameController.SetTextScore ("" + fishCount);
 		gameController.SetBar (fishIndex);
-//		bar.GetComponent<BarManager> ().SetBar (fishIndex);
 	}
 	
 	// Update is called once per frame
@@ -86,12 +80,8 @@ public class FishManager : MonoBehaviour {
 	private void MoveY(float y, float multiplier) {
 		float yDistance = y - transform.position.y;
 		speed.y = Mathf.Abs (yDistance) * multiplier;
-		if (yDistance > 0) {
-			// facing down toward target
-			transform.position += Vector3.up * speed.y * Time.deltaTime;
-		} else {
-			transform.position += Vector3.down * speed.y * Time.deltaTime;
-		}
+		Vector3 newPosY = (yDistance > 0) ? Vector3.up : Vector3.down;
+		transform.position += newPosY * speed.y * Time.deltaTime;
 	}
 
 	private bool ReachedTarget() {
@@ -121,7 +111,7 @@ public class FishManager : MonoBehaviour {
 
 		List<Fish> f = new List<Fish> ();
 		for (int i = 0;  i < 20;  i++) 
-			f.Add (new Fish (i + 1, 6, scale[i]));
+			f.Add (new Fish (i + 1, 1, scale[i]));
 		return f;
 	}
 
@@ -144,13 +134,13 @@ public class FishManager : MonoBehaviour {
 	public void Reeled() {
 		InitNextFish ();
 		RenderFish ();
-		buttons.GetComponent<ReelButtonManager>().ReelUpClicked();
-		soundSystem.GetComponent<SoundSystem> ().PlayCountSpeech (fishCount);
+		gameController.ReelUpClicked();
+		gameController.PlayCountSpeech (fishCount);
 		fishCount++;
-		score.text = "" + fishCount;
-		if (fishIndex == 19) {
-			fishIndex++;
-			canvas.GetComponent<LayerManager> ().ShowWinLayer (true, score.text);
+		gameController.SetTextScore ("" + fishCount);
+		if (fishIndex == 20) {
+			gameController.SetGlobalScore ();
+			gameController.LoadScene ("EndScene");
 		}
 	}
 
@@ -158,8 +148,12 @@ public class FishManager : MonoBehaviour {
 		if (fishIndex < 19) {
 			currFish = fish [++fishIndex];
 			anim.SetInteger ("FishCount", currFish.GetID ());
+			gameController.SetBar (fishIndex);
+		} else {
+			gameController.SetBar (fishIndex++);
+			gameController.SetGlobalScore ();
+			gameController.LoadScene ("EndScene");
 		}
-		gameController.SetBar (fishIndex);
 	}
 
 	private void RenderFish() {
@@ -168,5 +162,9 @@ public class FishManager : MonoBehaviour {
 		float scale = currFish.GetScale ();
 		transform.localScale = new Vector3 (scale, scale, 0);
 		currFish.SetFirstInit (false);
+	}
+
+	public int GetFishCount() {
+		return fishCount;
 	}
 }

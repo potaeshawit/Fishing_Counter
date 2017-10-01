@@ -54,9 +54,10 @@
      <Compile Include="Assets\BarManager.cs" />
      <Compile Include="Assets\GameController.cs" />
      <Compile Include="Assets\LayerManager.cs" />
+     <Compile Include="Assets\ScoreEndSceneHandler.cs" />
+     <Compile Include="Assets\ScoreValue.cs" />
      <Compile Include="Assets\Scripts\Fader.cs" />
      <Compile Include="Assets\Scripts\Fish.cs" />
-     <Compile Include="Assets\Scripts\FishingNetManager.cs" />
      <Compile Include="Assets\Scripts\FishManager.cs" />
      <Compile Include="Assets\Scripts\MusicManager.cs" />
      <Compile Include="Assets\Scripts\PlayerManager.cs" />

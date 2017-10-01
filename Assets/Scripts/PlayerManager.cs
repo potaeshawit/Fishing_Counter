@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour {
 
-	private bool facingRight;
+	private Animator anim;
 	private float speed;
+	private bool facingRight;
 	private bool isAnimating;
-
-	Animator anim;
 
 	// Use this for initialization
 	void Start () {

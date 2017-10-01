@@ -9,6 +9,7 @@ public class MusicManager : MonoBehaviour {
 	public AudioSource swooshMusic;
 	public AudioSource boatFx;
 	public AudioSource reelFx;
+
 	private bool fadingOut = false;
 
 	void Start() {

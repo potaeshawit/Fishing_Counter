@@ -4,31 +4,38 @@ using UnityEngine;
 
 public class PreyManager : MonoBehaviour {
 
-	public GameObject player;
-	public GameObject fish;
-	public GameObject mainCamera;
+	public GameObject gameControllerObj;
+	private GameController gameController;
+
+	private Vector2 pointStart;
+	private Vector2 pointEnd;
+	private Vector3 target;
+	private LineRenderer lr;
+	private Renderer renderer;
+
 	private float ySpeed;
 	private float timeDelay;
 	private bool isReeling;
 	private bool isReelingUp;
 	private bool isFirstTriggered;
-	private Vector2 pointStart;
-	private Vector2 pointEnd;
-	private Vector3 target;
 	private bool fishAttached;
-	private LineRenderer lr;
 
 	// Use this for initialization
 	void Start () {
+		gameController = gameControllerObj.GetComponent<GameController> ();
+		renderer = GetComponent<Renderer> ();
+		lr = GetComponent<LineRenderer> ();
+
 		ySpeed = 0f;
 		timeDelay = 1.0f;
-		GetComponent<Renderer> ().enabled = false;
-		GetComponent<LineRenderer> ().enabled = false;
+		renderer.enabled = false;
+		lr.enabled = false;
 		isReeling = false;
-		isFirstTriggered = true;
 		isReelingUp = false;
-		target = new Vector3 ();
 		fishAttached = false;
+
+		isFirstTriggered = true;
+		target = new Vector3 ();
 	}
 	
 	// Update is called once per frame
@@ -38,16 +45,15 @@ public class PreyManager : MonoBehaviour {
 			return;
 		}
 			
-
 		// set active
-		GetComponent<Renderer> ().enabled = true;
-		GetComponent<LineRenderer> ().enabled = true;
-		GetComponent<LineRenderer> ().SetColors (Color.black, Color.black);
+		renderer.enabled = true;
+		lr.enabled = true;
+		lr.SetColors (Color.black, Color.black);
 
 
 		target = transform.position;
-		target.x = player.transform.position.x;
-		target.x = GetXDistFromPlayer (target.x);
+		target.x = gameController.GetPlayerPosition().x;
+		target.x += GetPixelDiffByDir();
 
 		// start moving
 		MovePrey ();
@@ -59,13 +65,13 @@ public class PreyManager : MonoBehaviour {
 	}
 
 	private void DrawLine() {
-		Vector3 target = player.transform.position;
+		Vector3 target = gameController.GetPlayerPosition();
 
-		target.x += (float)(player.GetComponent<PlayerManager>().GetFacingRight() ? 1.2f : -1.2f);
+		target.x += GetPixelDiffByDir();
 		target.y -= 0.2f;
-		GetComponent<LineRenderer> ().SetWidth(0.01f, 0.01f);
-		GetComponent<LineRenderer> ().SetPosition(0, transform.position);
-		GetComponent<LineRenderer> ().SetPosition(1, target);
+		lr.SetWidth(0.01f, 0.01f);
+		lr.SetPosition(0, transform.position);
+		lr.SetPosition(1, target);
 	}
 
 	private void MovePrey() {
@@ -95,14 +101,15 @@ public class PreyManager : MonoBehaviour {
 
 	private void MoveY() {
 		// travel-y
+		float playerY = gameController.GetPlayerPosition().y;
 		if (isReelingUp) {
-			float yDistance = player.transform.position.y - transform.position.y;
+			float yDistance = playerY - transform.position.y;
 			float ySpeed = Mathf.Abs (yDistance) * 5f;
 			transform.position += Vector3.up * ySpeed * Time.deltaTime;
 			if (transform.position.y > 2.8) {
 				// finishing up fish[i]
 				if (fishAttached) {
-					fish.GetComponent<FishManager> ().Reeled ();
+					gameController.FishReeled ();
 				}
 				Start ();
 			}
@@ -110,7 +117,7 @@ public class PreyManager : MonoBehaviour {
 			transform.position += Vector3.down * ySpeed * 2f * Time.deltaTime;
 		}
 
-		pointStart.y = player.transform.position.y + 1;
+		pointStart.y = playerY + 1;
 		pointEnd.y = transform.position.y + 0.5f;
 	}
 
@@ -122,15 +129,13 @@ public class PreyManager : MonoBehaviour {
 
 	public void ReelUp() { 
 		isReelingUp = true; 
-		player.GetComponent<PlayerManager> ().Reel ();
-		mainCamera.GetComponent<MusicManager> ().PlayReelMusic ();
+		gameController.PlayerReel ();
+		gameController.PlayReelMusic ();
 	}
 	public void StopReel() { ySpeed = 0f; }
 
-	private float GetXDistFromPlayer(float x) {
-		PlayerManager playerManager = player.GetComponent<PlayerManager> ();
-		bool facingRight = playerManager.GetFacingRight ();
-		return (float) (facingRight ? (x + 1.2f) : (x - 1.2f));
+	private float GetPixelDiffByDir() {
+		return gameController.IsPlayerFacingRight () ? 1.2f : -1.2f;
 	}
 
 	private bool IsDelayed() {
@@ -147,10 +152,10 @@ public class PreyManager : MonoBehaviour {
 		float r = 1.0f;
 		float x = transform.position.x;
 		float y = transform.position.y;
-		float fX = fish.transform.position.x;
-		float fY = fish.transform.position.y;
+		float fX = gameController.GetFishPosition().x;
+		float fY = gameController.GetFishPosition().y;
 		if ((x > fX - r && x < fX + r) && (y > fY - r && y < fY + r)) {
-			fish.GetComponent<FishManager> ().SetGotHooked(true);
+			gameController.SetFishGotHooked(true);
 			fishAttached = true;
 		}
 	}
