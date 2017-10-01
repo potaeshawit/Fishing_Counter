@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\BarManager.cs" />
+     <Compile Include="Assets\GameController.cs" />
      <Compile Include="Assets\LayerManager.cs" />
      <Compile Include="Assets\Scripts\Fader.cs" />
      <Compile Include="Assets\Scripts\Fish.cs" />

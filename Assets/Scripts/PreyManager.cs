@@ -42,7 +42,6 @@ public class PreyManager : MonoBehaviour {
 		// set active
 		GetComponent<Renderer> ().enabled = true;
 		GetComponent<LineRenderer> ().enabled = true;
-//		GetComponent<LineRenderer> ().material = new Material (Shader.Find("Particles/Additive"));
 		GetComponent<LineRenderer> ().SetColors (Color.black, Color.black);
 
 
@@ -50,38 +49,19 @@ public class PreyManager : MonoBehaviour {
 		target.x = player.transform.position.x;
 		target.x = GetXDistFromPlayer (target.x);
 
-
-		//Gizmos.DrawLine(transform.position, player.transform.position);
-//		Debug.DrawLine(transform.position, player.transform.position, Color.black, 0);
-		//net.transform.position = transform.position;
-//		lr = net.GetComponent<LineRenderer>();
-//		lr.SetColors(Color.black, Color.black);
-//		lr.SetWidth(0.04f, 0.04f);
-//		lr.SetPosition(0, transform.position);
-//		lr.SetPosition(1, player.transform.position);
-
-
-
-//		lr.enabled = GetComponent<Renderer> ().enabled;
-		//lr.enabled = true;
-		//GameObject.Destroy(myLine, duration);
-//		net.GetComponent<LineRenderer>().
-
 		// start moving
 		MovePrey ();
 
 		if (!fishAttached)
 			CheckCollideFish ();
 
-
 		DrawLine ();
-
 	}
 
 	private void DrawLine() {
 		Vector3 target = player.transform.position;
 
-		target.x += (float)(player.GetComponent<PlayerManager>().GetFacingRight() ? 1.5f : -1.5f);
+		target.x += (float)(player.GetComponent<PlayerManager>().GetFacingRight() ? 1.2f : -1.2f);
 		target.y -= 0.2f;
 		GetComponent<LineRenderer> ().SetWidth(0.01f, 0.01f);
 		GetComponent<LineRenderer> ().SetPosition(0, transform.position);
@@ -150,7 +130,7 @@ public class PreyManager : MonoBehaviour {
 	private float GetXDistFromPlayer(float x) {
 		PlayerManager playerManager = player.GetComponent<PlayerManager> ();
 		bool facingRight = playerManager.GetFacingRight ();
-		return (float) (facingRight ? (x + 1.5f) : (x - 1.5f));
+		return (float) (facingRight ? (x + 1.2f) : (x - 1.2f));
 	}
 
 	private bool IsDelayed() {

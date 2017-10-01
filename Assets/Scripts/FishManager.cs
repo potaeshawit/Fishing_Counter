@@ -5,32 +5,37 @@ using UnityEngine.UI;
 
 public class FishManager : MonoBehaviour {
 
-	Animator anim;
-	List<Fish> fish;
-	Fish currFish;
-	Vector2 speed;
-	bool gotHooked;
-
-	public GameObject prey;
 	public GameObject soundSystem;
 	public GameObject buttons;
 	public GameObject textScore;
 	public GameObject canvas;
 	public GameObject bar;
-	private Text score;
+	public GameObject gameControllerObj;
 
+	Animator anim;
+	List<Fish> fish;
+	Fish currFish;
+	Vector2 speed;
+	bool gotHooked;
+	private Text score;
+	private int fishIndex;
 	private int fishCount;
+	private GameController gameController;
 
 	// Use this for initialization
 	void Start () {
+		gameController = gameControllerObj.GetComponent<GameController> ();
 		anim = GetComponent<Animator> ();
 		fish = InitializeFish();
-		currFish = fish [0];
 		speed = new Vector2 ();
 		gotHooked = false;
 		fishCount = 0;
+		fishIndex = 0;
+		currFish = fish [fishIndex];
 		score = textScore.GetComponent<Text> ();
 		score.text = "" + fishCount;
+		gameController.SetBar (fishIndex);
+//		bar.GetComponent<BarManager> ().SetBar (fishIndex);
 	}
 	
 	// Update is called once per frame
@@ -50,9 +55,8 @@ public class FishManager : MonoBehaviour {
 		MoveFish();
 
 		// 3. reached target
-		if (ReachedTarget()) {
+		if (ReachedTarget())
 			Survive ();
-		}
 	}
 
 	private void MoveFish() {
@@ -127,15 +131,14 @@ public class FishManager : MonoBehaviour {
 
 	public void BeingReeled() {
 		// position
-		transform.position = prey.transform.position;
+		transform.position = gameController.GetPreyPosition();
 
 		// scale
 		float interative = (float) ((currFish.GetScale() - 0.7) * 0.2);
 		currFish.SetScale (currFish.GetScale () - interative);
 		transform.localScale = new Vector3 (currFish.GetScale(), currFish.GetScale(), 0);
 
-		prey.GetComponent<PreyManager> ().ReelUp ();
-
+		gameController.PreyReelUp ();
 	}
 
 	public void Reeled() {
@@ -145,17 +148,18 @@ public class FishManager : MonoBehaviour {
 		soundSystem.GetComponent<SoundSystem> ().PlayCountSpeech (fishCount);
 		fishCount++;
 		score.text = "" + fishCount;
-		bar.GetComponent<BarManager> ().SetBar (fishCount);
+		if (fishIndex == 19) {
+			fishIndex++;
+			canvas.GetComponent<LayerManager> ().ShowWinLayer (true, score.text);
+		}
 	}
 
 	private void InitNextFish() {
-		if (fish.Count > 1) {
-			fish.RemoveAt (0);
-			currFish = fish [0];
+		if (fishIndex < 19) {
+			currFish = fish [++fishIndex];
 			anim.SetInteger ("FishCount", currFish.GetID ());
-		} else {
-			canvas.GetComponent<LayerManager> ().ShowWinLayer (true, score.text);
 		}
+		gameController.SetBar (fishIndex);
 	}
 
 	private void RenderFish() {
