@@ -70,10 +70,6 @@ public class GameController : MonoBehaviour {
 		textScore.text = str;
 	}
 
-	public void ShowWinLayer() {
-		layerManager.ShowWinLayer (true, "" + (int.Parse(textScore.text) + 1));
-	}
-
 	// Prey =================================================
 	public Vector3 GetPlayerPosition() {
 		return player.transform.transform.position;

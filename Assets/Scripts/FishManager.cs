@@ -111,7 +111,7 @@ public class FishManager : MonoBehaviour {
 
 		List<Fish> f = new List<Fish> ();
 		for (int i = 0;  i < 20;  i++) 
-			f.Add (new Fish (i + 1, 1, scale[i]));
+			f.Add (new Fish (i + 1, 6, scale[i]));
 		return f;
 	}
 
